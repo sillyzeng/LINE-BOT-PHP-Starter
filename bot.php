@@ -17,34 +17,27 @@ if (!is_null($events['events'])) {
 			$replyToken = $event['replyToken'];
 
 			// Build message to reply back 
-				$messages = [
-					  "type": "template",
-					  "altText": "this is a confirm template",
-					  "template": {
-					      "type": "confirm",
-					      "text": "Are you sure?",
-					      "actions": [
-						  {
-						    "type": "message",
-						    "label": "Yes",
-						    "text": "yes"
-						  },
-						  {
-						    "type": "message",
-						    "label": "No",
-						    "text": "no"
-						  }
-					      ]
-					  }
-				]; 
+			 
 			
 			
 			// Make a POST Request to Messaging API to reply to sender
-			$url = 'https://api.line.me/v2/bot/message/reply';
-			$data = [
-				'replyToken' => $replyToken,
-				'messages' => [$messages],
-			];
+			$url = 'https://api.line.me/v2/bot/message/reply'; 
+			$data=  [
+			      {
+				"replyToken": $replyToken,
+				"type": "message",
+				"timestamp": 1462629479859,
+				"source": {
+				     "type": "user",
+				     "userId": "U206d25c2ea6bd87c17655609a1c37cb8"
+				 },
+				 "message": {
+				     "id": "325708",
+				     "type": "text",
+				     "text": "Hello, world"
+				  }
+			      }
+			]
 			$post = json_encode($data); 
 			$headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
 
@@ -61,23 +54,4 @@ if (!is_null($events['events'])) {
 		}
 	}
 }
-echo 	$messages = [
-					  "type": "template",
-					  "altText": "this is a confirm template",
-					  "template": {
-					      "type": "confirm",
-					      "text": "Are you sure?",
-					      "actions": [
-						  {
-						    "type": "message",
-						    "label": "Yes",
-						    "text": "yes"
-						  },
-						  {
-						    "type": "message",
-						    "label": "No",
-						    "text": "no"
-						  }
-					      ]
-					  }
-				]; 
+echo 	"OK"
