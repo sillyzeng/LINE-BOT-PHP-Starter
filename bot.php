@@ -1,15 +1,6 @@
 <?php
 $access_token = 'OFmkms7FmGibjB8bbarU8jExukfzbI4sj5Jg1yp9PtEQ8FxUF35ilJTnBrxkW1n/aYvfZjvztL7X4n2bIyjPn6tOXwRvr2oAOznLrbWBcRf9BNQXzEgApLf3AAyDx3gKiFXYIEYJRAv3P/kJRONnywdB04t89/1O/w1cDnyilFU=';
-$httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient('<channel access token>');
-$bot = new \LINE\LINEBot($httpClient, ['channelSecret' => '<channel secret>']);
-$response = $bot->getProfile('<userId>');
-$textreturn = "";
-if ($response->isSucceeded()) {
-    $profile = $response->getJSONDecodedBody();
-    $textreturn .= $profile['displayName'];
-    $textreturn .= $profile['pictureUrl'];
-    $textreturn .= $profile['statusMessage'];
-}
+ 
 // Get POST body content
 $content = file_get_contents('php://input');
 // Parse JSON
@@ -25,25 +16,40 @@ if (!is_null($events['events'])) {
 			// Get replyToken
 			$replyToken = $event['replyToken'];
 
-			// Build message to reply back
-			if($text=="kam"){
+			// Build message to reply back 
 				$messages = [
 					'type' => 'text',
-					'text' => $textreturn
-				];
-			}else{
-				$messages = [
-					'type' => 'text',
-					'text' => $textreturn
-				];
-			}
+					'text' => $text
+				]; 
+			
+			
 			// Make a POST Request to Messaging API to reply to sender
 			$url = 'https://api.line.me/v2/bot/message/reply';
 			$data = [
 				'replyToken' => $replyToken,
 				'messages' => [$messages],
 			];
-			$post = json_encode($data);
+			//$post = json_encode($data);
+			$post = ' {
+			  "type": "template",
+			  "altText": "this is a confirm template",
+			  "template": {
+			      "type": "confirm",
+			      "text": "Are you sure?",
+			      "actions": [
+				  {
+				    "type": "message",
+				    "label": "Yes",
+				    "text": "yes"
+				  },
+				  {
+				    "type": "message",
+				    "label": "No",
+				    "text": "no"
+				  }
+			      ]
+			  }
+			}';
 			$headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
 
 			$ch = curl_init($url);
