@@ -1,6 +1,15 @@
 <?php
 $access_token = 'OFmkms7FmGibjB8bbarU8jExukfzbI4sj5Jg1yp9PtEQ8FxUF35ilJTnBrxkW1n/aYvfZjvztL7X4n2bIyjPn6tOXwRvr2oAOznLrbWBcRf9BNQXzEgApLf3AAyDx3gKiFXYIEYJRAv3P/kJRONnywdB04t89/1O/w1cDnyilFU=';
-
+$httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient('<channel access token>');
+$bot = new \LINE\LINEBot($httpClient, ['channelSecret' => '<channel secret>']);
+$response = $bot->getProfile('<userId>');
+$textreturn = "";
+if ($response->isSucceeded()) {
+    $profile = $response->getJSONDecodedBody();
+    $textreturn .= $profile['displayName'];
+    $textreturn .= $profile['pictureUrl'];
+    $textreturn .= $profile['statusMessage'];
+}
 // Get POST body content
 $content = file_get_contents('php://input');
 // Parse JSON
@@ -20,12 +29,12 @@ if (!is_null($events['events'])) {
 			if($text=="kam"){
 				$messages = [
 					'type' => 'text',
-					'text' => "คนบ้า"
+					'text' => $textreturn
 				];
 			}else{
 				$messages = [
 					'type' => 'text',
-					'text' => "คนหล่อ"
+					'text' => $textreturn
 				];
 			}
 			// Make a POST Request to Messaging API to reply to sender
