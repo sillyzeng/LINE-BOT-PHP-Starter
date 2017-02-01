@@ -18,8 +18,24 @@ if (!is_null($events['events'])) {
 
 			// Build message to reply back 
 				$messages = [
-					'type' => 'text',
-					'text' => $text
+					  "type": "template",
+					  "altText": "this is a confirm template",
+					  "template": {
+					      "type": "confirm",
+					      "text": "Are you sure?",
+					      "actions": [
+						  {
+						    "type": "message",
+						    "label": "Yes",
+						    "text": "yes"
+						  },
+						  {
+						    "type": "message",
+						    "label": "No",
+						    "text": "no"
+						  }
+					      ]
+					  }
 				]; 
 			
 			
@@ -29,27 +45,7 @@ if (!is_null($events['events'])) {
 				'replyToken' => $replyToken,
 				'messages' => [$messages],
 			];
-			//$post = json_encode($data);
-			$post = ' {
-			  "type": "template",
-			  "altText": "this is a confirm template",
-			  "template": {
-			      "type": "confirm",
-			      "text": "Are you sure?",
-			      "actions": [
-				  {
-				    "type": "message",
-				    "label": "Yes",
-				    "text": "yes"
-				  },
-				  {
-				    "type": "message",
-				    "label": "No",
-				    "text": "no"
-				  }
-			      ]
-			  }
-			}';
+			$post = json_encode($data); 
 			$headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
 
 			$ch = curl_init($url);
