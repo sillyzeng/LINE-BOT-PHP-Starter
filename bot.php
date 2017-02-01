@@ -8,3 +8,4 @@ if ($response->isSucceeded()) {
     echo $profile['pictureUrl'];
     echo $profile['statusMessage'];
 }
+?>
